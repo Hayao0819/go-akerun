@@ -28,5 +28,17 @@ jobs:
       with:
         skip-pkg-cache: true
 
-    - name: Test
-      run: go test -v ./...
+    - name: Install gcov2lcov
+      run: |
+        go install github.com/jandelgado/gcov2lcov@latest
+    - name: Test and Generate coverage report
+      run: |
+        go test -coverprofile=coverage.out && \
+        gcov2lcov -infile=coverage.out -outfile=coverage.lcov
+    - name: CodeClimate
+      uses: paambaati/codeclimate-action@v6.0.0
+      env:
+        CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      with:
+        debug: true
+        coverageLocations: ${{github.workspace}}/coverage.lcov:lcov
