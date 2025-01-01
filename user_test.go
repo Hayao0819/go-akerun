@@ -2,6 +2,7 @@ package akerun
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -84,7 +85,10 @@ func TestClient_RegisterUser(t *testing.T) {
 		assert.Equal(t, "/v3/organizations/org1/users", r.URL.Path)
 
 		// Write a sample response
-		_, err := w.Write([]byte(`{"user":{"id":"user1","name":"Test User"}}`))
+		q := r.URL.Query()
+		userName := q.Get("user_name")
+		userEmail := q.Get("user_mail")
+		_, err := w.Write([]byte(fmt.Sprintf(`{"user":{"id":"user1","name":"%s","mail":"%s"}}`, userName, userEmail)))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -119,7 +123,10 @@ func TestClient_UpdateUser(t *testing.T) {
 		assert.Equal(t, "/v3/organizations/org1/users/user1", r.URL.Path)
 
 		// Write a sample response
-		_, err := w.Write([]byte(`{"user":{"id":"user1","name":"Updated User"}}`))
+		q := r.URL.Query()
+		userName := q.Get("user_name")
+		userEmail := q.Get("user_mail")
+		_, err := w.Write([]byte(fmt.Sprintf(`{"user":{"id":"user1","name":"%s","mail":"%s"}}`, userName, userEmail)))
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -179,7 +186,9 @@ func TestClient_InviteUser(t *testing.T) {
 		assert.Equal(t, "/v3/organizations/org1/users/user1", r.URL.Path)
 
 		// Write a sample response
-		_, err := w.Write([]byte(`{"user":{"id":"user1","name":"Test User"}}`))
+		q := r.URL.Query()
+		userId := q.Get("user_id")
+		_, err := w.Write([]byte(fmt.Sprintf(`{"user":{"id":"%s","name":"Test User"}}`, userId)))
 		if err != nil {
 			t.Fatal(err)
 		}

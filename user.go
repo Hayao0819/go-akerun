@@ -11,15 +11,6 @@ import (
 
 const apiPathUsers = "users"
 
-type UsersParameter struct {
-	Limit           uint32 `url:"limit,omitempty"`
-	IdAfter         string `url:"id_after,omitempty"`
-	IdBefore        string `url:"id_before,omitempty"`
-	UserCode        string `url:"user_code,omitempty"`
-	UserMail        string `url:"user_mail,omitempty"`
-	IncludeDateTime bool   `url:"include_date_time,omitempty"`
-}
-
 type UsersList struct {
 	Users []User `json:"users"`
 }
@@ -43,6 +34,15 @@ type User struct {
 
 type userRow struct {
 	User User `json:"user"`
+}
+
+type UsersParameter struct {
+	Limit           uint32 `url:"limit,omitempty"`
+	IdAfter         string `url:"id_after,omitempty"`
+	IdBefore        string `url:"id_before,omitempty"`
+	UserCode        string `url:"user_code,omitempty"`
+	UserMail        string `url:"user_mail,omitempty"`
+	IncludeDateTime bool   `url:"include_date_time,omitempty"`
 }
 
 func (c *Client) GetUsers(
@@ -78,10 +78,10 @@ func (c *Client) GetUser(
 }
 
 type RegisterUserParameter struct {
-	UserMail      string `json:"user_mail,omitempty"`
-	UserImage     string `json:"user_image,omitempty"`
-	UserAuthority string `json:"user_authority,omitempty"`
-	UserCode      string `json:"user_code,omitempty"`
+	UserMail      string `url:"user_mail,omitempty"`
+	UserImage     string `url:"user_image,omitempty"`
+	UserAuthority string `url:"user_authority,omitempty"`
+	UserCode      string `url:"user_code,omitempty"`
 }
 
 func (c *Client) RegisterUser(
@@ -96,7 +96,8 @@ func (c *Client) RegisterUser(
 	if err != nil {
 		return nil, err
 	}
-	err = c.callVersion(ctx, path.Join(apiPathOrganizations, organizationId, apiPathUsers), http.MethodPost, oauth2Token, nil, v, &result)
+	v.Add("user_name", name)
+	err = c.callVersion(ctx, path.Join(apiPathOrganizations, organizationId, apiPathUsers), http.MethodPost, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -104,9 +105,9 @@ func (c *Client) RegisterUser(
 }
 
 type InviteUserParameter struct {
-	UserImage     string `json:"user_image,omitempty"`
-	UserAuthority string `json:"user_authority,omitempty"`
-	UserCode      string `json:"user_code,omitempty"`
+	UserImage     string `url:"user_image,omitempty"`
+	UserAuthority string `url:"user_authority,omitempty"`
+	UserCode      string `url:"user_code,omitempty"`
 }
 
 func (c *Client) InviteUser(
@@ -121,7 +122,8 @@ func (c *Client) InviteUser(
 	if err != nil {
 		return nil, err
 	}
-	err = c.callVersion(ctx, path.Join(apiPathOrganizations, organizationId, apiPathUsers, userId), http.MethodPost, oauth2Token, nil, v, &result)
+	v.Add("user_id", userId)
+	err = c.callVersion(ctx, path.Join(apiPathOrganizations, organizationId, apiPathUsers, userId), http.MethodPost, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -129,11 +131,11 @@ func (c *Client) InviteUser(
 }
 
 type UpdateUserParameter struct {
-	UserName      string `json:"user_name,omitempty"`
-	UserMail      string `json:"user_mail,omitempty"`
-	UserImage     string `json:"user_image,omitempty"`
-	UserAuthority string `json:"user_authority,omitempty"`
-	UserCode      string `json:"user_code,omitempty"`
+	UserName      string `url:"user_name,omitempty"`
+	UserMail      string `url:"user_mail,omitempty"`
+	UserImage     string `url:"user_image,omitempty"`
+	UserAuthority string `url:"user_authority,omitempty"`
+	UserCode      string `url:"user_code,omitempty"`
 }
 
 func (c *Client) UpdateUser(
@@ -148,7 +150,8 @@ func (c *Client) UpdateUser(
 	if err != nil {
 		return nil, err
 	}
-	err = c.callVersion(ctx, path.Join(apiPathOrganizations, organizationId, apiPathUsers, userId), http.MethodPut, oauth2Token, nil, v, &result)
+	v.Add("user_id", userId)
+	err = c.callVersion(ctx, path.Join(apiPathOrganizations, organizationId, apiPathUsers, userId), http.MethodPut, oauth2Token, v, nil, &result)
 	if err != nil {
 		return nil, err
 	}
@@ -161,6 +164,7 @@ func (c *Client) ExitUser(
 	organizationId string,
 	userId string,
 ) error {
+
 	err := c.callVersion(ctx, path.Join(apiPathOrganizations, organizationId, apiPathUsers, userId), http.MethodDelete, oauth2Token, nil, nil, nil)
 	if err != nil {
 		return err
