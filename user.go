@@ -68,13 +68,13 @@ func (c *Client) GetUser(
 	oauth2Token *oauth2.Token,
 	organizationId string,
 	userId string,
-) (*userRow, error) {
+) (*User, error) {
 	var result userRow
 	err := c.callVersion(ctx, path.Join(apiPathOrganizations, organizationId, apiPathUsers, userId), http.MethodGet, oauth2Token, nil, nil, &result)
 	if err != nil {
 		return nil, err
 	}
-	return &result, nil
+	return &result.User, nil
 }
 
 type RegisterUserParameter struct {
@@ -90,7 +90,7 @@ func (c *Client) RegisterUser(
 	organizationId string,
 	name string,
 	params RegisterUserParameter,
-) (*userRow, error) {
+) (*User, error) {
 	var result userRow
 	v, err := query.Values(params)
 	if err != nil {
@@ -100,7 +100,7 @@ func (c *Client) RegisterUser(
 	if err != nil {
 		return nil, err
 	}
-	return &result, nil
+	return &result.User, nil
 }
 
 type InviteUserParameter struct {
@@ -115,7 +115,7 @@ func (c *Client) InviteUser(
 	organizationId string,
 	userId string,
 	params InviteUserParameter,
-) (*userRow, error) {
+) (*User, error) {
 	var result userRow
 	v, err := query.Values(params)
 	if err != nil {
@@ -125,7 +125,7 @@ func (c *Client) InviteUser(
 	if err != nil {
 		return nil, err
 	}
-	return &result, nil
+	return &result.User, nil
 }
 
 type UpdateUserParameter struct {
@@ -142,7 +142,7 @@ func (c *Client) UpdateUser(
 	organizationId string,
 	userId string,
 	params UpdateUserParameter,
-) (*userRow, error) {
+) (*User, error) {
 	var result userRow
 	v, err := query.Values(params)
 	if err != nil {
@@ -152,7 +152,7 @@ func (c *Client) UpdateUser(
 	if err != nil {
 		return nil, err
 	}
-	return &result, nil
+	return &result.User, nil
 }
 
 func (c *Client) ExitUser(
