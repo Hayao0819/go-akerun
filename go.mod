@@ -1,4 +1,4 @@
-module github.com/yshimada0330/go-akerun
+module github.com/Hayao0819/go-akerun
 
 go 1.21.1
 
