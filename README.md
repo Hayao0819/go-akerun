@@ -1,10 +1,9 @@
 # go-akerun
 Akerun API Client for Golang
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/yshimada0330/go-akerun.svg)](https://pkg.go.dev/github.com/yshimada0330/go-akerun)
-![workflow](https://github.com/yshimada0330/go-akerun/actions/workflows/go.yml/badge.svg)
-[![Maintainability](https://api.codeclimate.com/v1/badges/89f807cbeb3eb3f93afb/maintainability)](https://codeclimate.com/github/yshimada0330/go-akerun/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/89f807cbeb3eb3f93afb/test_coverage)](https://codeclimate.com/github/yshimada0330/go-akerun/test_coverage)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Hayao0819/go-akerun.svg)](https://pkg.go.dev/github.com/Hayao0819/go-akerun)
+![workflow](https://github.com/Hayao0819/go-akerun/actions/workflows/go.yml/badge.svg)
+
 
 
 #### Links
@@ -13,7 +12,7 @@ Akerun API Client for Golang
 
 ## Installation
 ```sh
-$ go get -u github.com/yshimada0330/go-akerun
+$ go get -u github.com/Hayao0819/go-akerun
 ```
 
 ## Usage
